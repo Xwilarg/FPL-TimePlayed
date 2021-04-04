@@ -17,4 +17,4 @@ If you do something that might delete this file (updating this extension of repl
 ## Note about how your playtime is displayed
 For now your playtime is displayed on a game under the "Notes" section, this section, usually left empty, may contains various information about the game.\
 TimePlayed doesn't remove the information written here, but add your playtime on top of it.\
-However everything written here is persistent, that means that your playtime will still be written even after deleting TimePlayed
+However everything written here is persistent, the only way to modify it is by going in Configuration, enabling the edition mode and pressing the small pencil on the top-left corner of the game.
