@@ -54,7 +54,7 @@ export function activate(context: flashpoint.ExtensionContext) {
                 times.set(closedId, new GameInfo(timer.gameName, diff / 1000));
             }
 
-            writeFileSync(path.join(__dirname, "../data/times.json"), serializer.stringify(times), "utf8");
+            writeFileSync(path.join(__dirname, "../data/times.json"), "", "utf8");
 
             delete timers[closedId];
             flashpoint.log.info('Session of ' + timer.gameName + ' lasted ' + ((diff / 1000) / 60).toFixed(2) + ' minutes for a total of ' + (times.get(closedId).totalTime / 60).toFixed(2) + ' minutes');
