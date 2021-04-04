@@ -1,0 +1,15 @@
+{
+    "name": "time-played",
+    "displayName": "Time Played",
+    "author": "Xwilarg",
+    "version": "0.0.1",
+    "launcherVersion": "9.0.0",
+    "description": "Display how much time you spent on a game",
+    "main": "./dist/ext.js",
+    "devDependencies": {
+        "typescript": "^4.2.3"
+    },
+    "scripts": {
+        "build": "tsc"
+    }
+}
