@@ -45,11 +45,16 @@ function submitActivity(id: string) {
 
 function updateTime(id: string) {
     flashpoint.games.findGame(id).then((x: flashpoint.Game) => {
+        let outputHtml = "Time played: " + (times[id].totalTime / 60).toFixed(1) + " minutes";
         let notes = x.notes;
         if (notes.includes("Time played:")) {
-            notes = notes.replace(/Time played:.*/, "Time played: " + (times[id].totalTime / 60).toFixed(1) + " minutes");
+            notes = notes.replace(/.*Time played:.*/, outputHtml);
         } else {
-            notes = "Time played: " + (times[id].totalTime / 60).toFixed(1) + " minutes\n\n" + notes;
+            if (notes === "") {
+                notes = outputHtml;
+            } else {
+                notes = outputHtml + "\n\n" + notes;
+            }
         }
         x.notes = notes;
         flashpoint.games.updateGame(x);
