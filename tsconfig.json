@@ -1,13 +1,14 @@
 {
     "compilerOptions": {
-      "module": "commonjs",
-      "outDir": "./dist",
+        "lib": ["ES2015"],
+        "module": "commonjs",
+        "outDir": "./dist",
     },
     "exclude": [
-      "./dist"
+        "./dist"
     ],
     "include": [
-      "./typings",
-      "./src"
+        "./typings",
+        "./src"
     ]
   }

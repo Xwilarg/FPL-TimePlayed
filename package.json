@@ -5,6 +5,19 @@
     "version": "0.0.1",
     "launcherVersion": "9.0.0",
     "description": "Display how much time you spent on a game",
+    "contributes": {
+        "configuration": [{
+            "title": "Time Played",
+            "properties": {
+                "com.time-played.allow-multiple-game-instance": {
+                    "title": "Allow multiple game instance",
+                    "type": "boolean",
+                    "default": false,
+                    "description": "If unticked, when starting 2 games only the time of the latest started will be counted"
+                }
+            }
+        }]
+    },
     "main": "./dist/ext.js",
     "devDependencies": {
         "typescript": "^4.2.3"
