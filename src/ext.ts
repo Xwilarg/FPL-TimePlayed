@@ -25,6 +25,14 @@ class GameInfo {
 let timers: { [id: string] : GameLaunch; } = {};
 let times: { [id: string] : GameInfo; } = {};
 
+function getDisplaytime(time: number) {
+    let curr = time / 60;
+    if (curr > 90) {
+        return (curr / 60).toFixed(1) + " hours";
+    }
+    return curr.toFixed(1) + " minutes";
+}
+
 function submitActivity(id: string) {
     let timer = timers[id];
     let diff = new Date().getTime() - timer.creaDate.getTime();
@@ -40,12 +48,12 @@ function submitActivity(id: string) {
     updateTime(id);
 
     delete timers[id];
-    flashpoint.log.info('Session of ' + timer.gameName + ' lasted ' + ((diff / 1000) / 60).toFixed(2) + ' minutes for a total of ' + (times[id].totalTime / 60).toFixed(2) + ' minutes');
+    flashpoint.log.info('Session of ' + timer.gameName + ' lasted ' + ((diff / 1000) / 60).toFixed(2) + ' minutes for a total of ' + getDisplaytime(times[id].totalTime));
 }
 
 function updateTime(id: string) {
     flashpoint.games.findGame(id).then((x: flashpoint.Game) => {
-        let outputHtml = "Time played: " + (times[id].totalTime / 60).toFixed(1) + " minutes";
+        let outputHtml = "Time played: " + getDisplaytime(times[id].totalTime);
         let notes = x.notes;
         if (notes.includes("Time played:")) {
             notes = notes.replace(/.*Time played:.*/, outputHtml);

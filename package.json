@@ -2,7 +2,7 @@
     "name": "time-played",
     "displayName": "Time Played",
     "author": "Xwilarg",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "launcherVersion": "9.0.0",
     "description": "Display how much time you spent on a game",
     "contributes": {
