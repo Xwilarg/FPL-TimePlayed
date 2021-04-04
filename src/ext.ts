@@ -25,6 +25,22 @@ class GameInfo {
 let timers: { [id: string] : GameLaunch; } = {};
 let times: { [id: string] : GameInfo; } = {};
 
+function submitActivity(id: string) {
+    let timer = timers[id];
+    let diff = new Date().getTime() - timer.creaDate.getTime();
+
+    if (times[id] !== undefined) {
+        times[id].totalTime += diff / 1000;
+    } else {
+        times[id] = new GameInfo(timer.gameName, diff / 1000);
+    }
+
+    writeFileSync(path.join(__dirname, "../data/times.json"), JSON.stringify(times), "utf8");
+
+    delete timers[id];
+    flashpoint.log.info('Session of ' + timer.gameName + ' lasted ' + ((diff / 1000) / 60).toFixed(2) + ' minutes for a total of ' + (times[id].totalTime / 60).toFixed(2) + ' minutes');
+}
+
 export function activate(context: flashpoint.ExtensionContext) {
 
     if (existsSync(path.join(__dirname, "../data/times.json"))) {
@@ -32,24 +48,15 @@ export function activate(context: flashpoint.ExtensionContext) {
     }
 
     flashpoint.games.onDidLaunchGame((game) => {
+        if (!flashpoint.getExtConfigValue('com.time-played.allow-multiple-game-instance') && Object.keys(timers).length > 0) {
+            submitActivity(Object.keys(timers)[0]);
+            timers = {};
+        }
         timers[game.id] = new GameLaunch(game.title);
     });
     flashpoint.services.onServiceRemove((process) => {
-        if (process.id.startsWith('game.') && process.id.length > 5) {
-            let closedId = process.id.substr(5);
-            let timer = timers[closedId];
-            let diff = new Date().getTime() - timer.creaDate.getTime();
-
-            if (times[closedId] !== undefined) {
-                times[closedId].totalTime += diff / 1000;
-            } else {
-                times[closedId] = new GameInfo(timer.gameName, diff / 1000);
-            }
-
-            writeFileSync(path.join(__dirname, "../data/times.json"), JSON.stringify(times), "utf8");
-
-            delete timers[closedId];
-            flashpoint.log.info('Session of ' + timer.gameName + ' lasted ' + ((diff / 1000) / 60).toFixed(2) + ' minutes for a total of ' + (times[closedId].totalTime / 60).toFixed(2) + ' minutes');
+        if (process.id.startsWith('game.') && process.id.length > 5 && timers[process.id.substr(5)] !== undefined) {
+            submitActivity(process.id.substr(5));
         }
     });
 }
