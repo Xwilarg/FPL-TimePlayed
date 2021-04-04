@@ -37,14 +37,32 @@ function submitActivity(id: string) {
 
     writeFileSync(path.join(__dirname, "../data/times.json"), JSON.stringify(times), "utf8");
 
+    updateTime(id);
+
     delete timers[id];
     flashpoint.log.info('Session of ' + timer.gameName + ' lasted ' + ((diff / 1000) / 60).toFixed(2) + ' minutes for a total of ' + (times[id].totalTime / 60).toFixed(2) + ' minutes');
+}
+
+function updateTime(id: string) {
+    flashpoint.games.findGame(id).then((x: flashpoint.Game) => {
+        let notes = x.notes;
+        if (notes.includes("Time played:")) {
+            notes = notes.replace(/Time played:.*/, "Time played: " + (times[id].totalTime / 60).toFixed(1) + " minutes");
+        } else {
+            notes = "Time played: " + (times[id].totalTime / 60).toFixed(1) + " minutes\n\n" + notes;
+        }
+        x.notes = notes;
+        flashpoint.games.updateGame(x);
+    });
 }
 
 export function activate(context: flashpoint.ExtensionContext) {
 
     if (existsSync(path.join(__dirname, "../data/times.json"))) {
         times = JSON.parse(readFileSync(path.join(__dirname, "../data/times.json"), "utf8"));
+        Object.keys(times).forEach(function(key) {
+            updateTime(key);
+        });
     }
 
     flashpoint.games.onDidLaunchGame((game) => {
