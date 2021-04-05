@@ -10,6 +10,10 @@ If you start a game A then a game B, the time count of game A will stop when gam
  - Open your Flashpoint folder and go in Data/Extensions, unzip the file there
  - Your extension will now be installed the next time you restart Flashpoint!
 
+## My playtime isn't displayed/updating
+To see your playtime, you must refresh the current game display, for that just select another game and go back to the one you were\
+You playtime is also logged in the History tab
+
 ## Notice when updating Flashpoint or this extension
 Your times are saved in \[your flashpoint directory\]/Data/Extensions/TimePlayed/data/times.json\
 If you do something that might delete this file (updating this extension of replacing your Flashpoint Infinity version with another one) make sure to copy this file and paste it there again afterward
