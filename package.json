@@ -29,7 +29,6 @@
     },
     "dependencies": {
         "@types/flashpoint-launcher": "^9.1.0",
-        "@types/node": "^14.14.37",
-        "typedjson": "^1.7.0"
+        "@types/node": "^14.14.37"
     }
 }
