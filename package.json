@@ -11,7 +11,7 @@
                 "title": "Time Played",
                 "properties": {
                     "com.time-played.allow-multiple-game-instance": {
-                        "title": "Allow multiple game instance",
+                        "title": "Allow multiple game instances",
                         "type": "boolean",
                         "default": false,
                         "description": "If unticked, when starting 2 games only the time of the latest started will be counted"
