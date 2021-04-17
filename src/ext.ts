@@ -66,6 +66,61 @@ function updateTime(id: string) {
         }
         x.notes = notes;
         flashpoint.games.updateGame(x);
+
+        if (!flashpoint.getExtConfigValue('com.time-played.create-playlist')) {
+            return;
+        }
+
+        flashpoint.games.findPlaylist("time-played").then((x: flashpoint.Playlist) => {
+            if (x !== undefined) {
+                flashpoint.games.removePlaylist(x.id);
+            }
+        });
+        let games = [];
+        for (const [key, value] of Object.entries(times)) {
+            games.push({ id: key, time: value.totalTime });
+        }
+
+        games.sort(function(a, b) {
+            return a.time > b.time ? -1 : 1;
+        });
+
+        let max = games.length > 10 ? 10 : games.length;
+
+        let whitelist : flashpoint.FieldFilter[] = [];
+        for (let i = 0; i < max; i++) {
+            let filter: flashpoint.FieldFilter = {
+                field: "id",
+                value: games[i].id
+            };
+            whitelist.push(filter);
+        }
+        let search : flashpoint.FindGamesOpts = {
+            filter: {
+                searchQuery: {
+                    whitelist: whitelist,
+                    blacklist: [],
+                    genericBlacklist: [],
+                    genericWhitelist: []
+                }
+            }
+        };
+        flashpoint.games.findGames(search, false).then((x: flashpoint.ResponseGameRange<false>[]) => {
+            for (const elem in x[0].games) {
+                flashpoint.log.info("Elem: " + elem);
+            }
+        });
+
+
+       /* let playlist: flashpoint.Playlist = {
+            id: "time-played",
+            author: "Xwilarg",
+            description: "Your 10 most played games and animations",
+            extreme: false,
+            title: "*Most Played*",
+            icon: null,
+            library: "arcade"
+        }*/
     });
 }
 
