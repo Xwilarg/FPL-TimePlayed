@@ -15,6 +15,18 @@
                         "type": "boolean",
                         "default": false,
                         "description": "If unticked, when starting 2 games only the time of the latest started will be counted"
+                    },
+                    "com.time-played.create-playlist": {
+                        "title": "Create a playlist with your most played game",
+                        "type": "boolean",
+                        "default": true,
+                        "description": "If ticked, the extension will create a playlist with your most played games inside"
+                    },
+                    "com.time-played.show-extreme-in-playlist": {
+                        "title": "Display extreme games in playlist",
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Will extreme games be displayed in your \"Most Played\" playlist"
                     }
                 }
             }
