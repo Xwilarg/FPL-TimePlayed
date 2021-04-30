@@ -15,10 +15,12 @@ class GameLaunch {
 class GameInfo {
     totalTime: number;
     gameName: string;
+    nbLaunch: number;
 
     constructor(gameName: string, currentTime: number) {
         this.totalTime = currentTime;
         this.gameName = gameName;
+        this.nbLaunch = 1;
     }
 }
 
@@ -44,6 +46,8 @@ function submitActivity(id: string) {
     // Update previous time if exist
     if (times[id] !== undefined) {
         times[id].totalTime += diff / 1000;
+        if (times[id].nbLaunch === undefined) times[id].nbLaunch = 1;
+        else times[id].nbLaunch++;
     } else {
         times[id] = new GameInfo(timer.gameName, diff / 1000);
     }
@@ -60,12 +64,15 @@ function submitActivity(id: string) {
 // Update time played in the "note" section of the game
 function updateTime(id: string) {
     flashpoint.games.findGame(id).then((x: flashpoint.Game) => {
-        let outputHtml = "Time played: " + getDisplaytime(times[id].totalTime);
+        let nbLaunch = times[id].nbLaunch;
+        let outputHtml = "Launched " + (nbLaunch === undefined ? 0 : nbLaunch) + " times, played for " + getDisplaytime(times[id].totalTime);
         let notes = x.notes;
 
         // If the note section already exist, we update it, else we create a new one
-        if (notes.includes("Time played:")) {
+        if (notes.includes("Time played:")) { // Compatibility with 1.1.0
             notes = notes.replace(/.*Time played:.*/, outputHtml);
+        } else if (notes.includes("times, played for")) {
+            notes = notes.replace(/.*times, played for.*/, outputHtml);
         } else {
             if (notes === "") {
                 notes = outputHtml;
